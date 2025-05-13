@@ -5,6 +5,11 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(p => p.AddPolicy("corsenabled", options =>
+{
+    options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
 builder.Services.AddDbContext<PersonajesContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("MySQL")));
 builder.Services.AddTransient<RepositoryPersonajes>();
@@ -22,7 +27,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 }
-app.MapScalarApiReference();
+app.MapScalarApiReference(opt =>
+{
+    opt.Title = "Scalar Personajes";
+    opt.Theme = ScalarTheme.BluePlanet;
+});
+app.UseCors("corsenabled");
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
