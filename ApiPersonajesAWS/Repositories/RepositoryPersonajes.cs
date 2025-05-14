@@ -28,6 +28,32 @@ namespace ApiPersonajesAWS.Repositories
             return await context.Personajes.MaxAsync(p => p.IdPersonaje);
         }
 
+        public async Task<bool> DeletePersonaje(int id)
+        {
+            Personaje personaje = await FindPersonaje(id);
+            if (personaje != null)
+            {
+                context.Personajes.Remove(personaje);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> UpdatePersonaje(int id, string nombre, string imagen)
+        {
+            Personaje personaje = await FindPersonaje(id);
+            if (personaje != null)
+            {
+                personaje.Nombre = nombre;
+                personaje.Imagen = imagen;
+                context.Personajes.Update(personaje);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<Personaje> AddPersonaje(string nombre, string imagen)
         {
             Personaje personaje = new Personaje();

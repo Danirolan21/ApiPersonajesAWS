@@ -44,5 +44,31 @@ namespace ApiPersonajesAWS.Controllers
             Personaje newPersonaje = await repo.AddPersonaje(personaje.Nombre, personaje.Imagen);
             return CreatedAtAction(nameof(GetPersonaje), new { id = newPersonaje.IdPersonaje }, newPersonaje);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePersonaje([FromBody] Personaje personaje)
+        {
+            if (personaje == null || string.IsNullOrEmpty(personaje.Nombre) || string.IsNullOrEmpty(personaje.Imagen))
+            {
+                return BadRequest("Invalid character data.");
+            }
+            bool updated = await repo.UpdatePersonaje(personaje.IdPersonaje, personaje.Nombre, personaje.Imagen);
+            if (!updated)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePersonaje(int id)
+        {
+            bool deleted = await repo.DeletePersonaje(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }
