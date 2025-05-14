@@ -23,16 +23,16 @@ namespace ApiPersonajesAWS.Controllers
             return Ok(personajes);
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetPersonaje(int id)
-        //{
-        //    Personaje personaje = await repo.FindPersonaje(id);
-        //    if (personaje == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(personaje);
-        //}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPersonaje(int id)
+        {
+            Personaje personaje = await repo.FindPersonaje(id);
+            if (personaje == null)
+            {
+                return NotFound();
+            }
+            return Ok(personaje);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddPersonaje([FromBody] Personaje personaje)
